@@ -12,3 +12,11 @@ type MongoEntity struct {
 	UpdatedAt time.Time          `bson:"update_at"`
 	DeletedAt *time.Time         `bson:"deleted_at"`
 }
+
+func NewMongoEntity() MongoEntity {
+	return MongoEntity{
+		ID:        primitive.NewObjectID(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}
