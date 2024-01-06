@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -17,6 +18,22 @@ func (h Hash) MarshalJSON() ([]byte, error) {
 func (h *Hash) UnmarshalJSON(data []byte) error {
 	var hashed string
 	if err := json.Unmarshal(data, &hashed); err != nil {
+		return err
+	}
+
+	*h = Hash(hashed)
+	return nil
+}
+
+// MarshalBSON implements the bson.Marshaler interface.
+func (h Hash) MarshalBSON() ([]byte, error) {
+	return bson.Marshal(h.String())
+}
+
+// UnmarshalBSON implements the bson.Unmarshaler interface.
+func (h *Hash) UnmarshalBSON(data []byte) error {
+	var hashed string
+	if err := bson.Unmarshal(data, &hashed); err != nil {
 		return err
 	}
 
